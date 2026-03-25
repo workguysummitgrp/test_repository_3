@@ -20,6 +20,7 @@ export interface QuoteData {
   previousClose: number;
   change: number;
   changePercent: number;
+  fetchedAt: number;
 }
 
 export interface ChartPoint {

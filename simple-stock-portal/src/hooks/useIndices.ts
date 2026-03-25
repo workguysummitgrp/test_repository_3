@@ -1,4 +1,5 @@
 // useIndices — [FRD-010] Fetch 3 ETF proxy quotes (SPY/QQQ/DIA) staggered
+// [US-007] Track section-level fetch timestamp
 
 import { useState, useEffect } from 'react';
 import type { IndexData } from '../types';
@@ -14,6 +15,7 @@ export function useIndices() {
   const [indices, setIndices] = useState<IndexData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [fetchedAt, setFetchedAt] = useState<number | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -37,10 +39,14 @@ export function useIndices() {
         }
         if (!cancelled) {
           setIndices(results);
+          setFetchedAt(Date.now());
         }
       } catch (err) {
         if (!cancelled) {
-          if (results.length > 0) setIndices(results);
+          if (results.length > 0) {
+            setIndices(results);
+            setFetchedAt(Date.now());
+          }
           setError(err instanceof Error ? err.message : 'Failed to load market data.');
         }
       } finally {
@@ -54,5 +60,5 @@ export function useIndices() {
     };
   }, []);
 
-  return { indices, isLoading, error };
+  return { indices, isLoading, error, fetchedAt };
 }

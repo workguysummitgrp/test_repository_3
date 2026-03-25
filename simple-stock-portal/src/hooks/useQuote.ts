@@ -1,4 +1,4 @@
-// useQuote — [FRD-003] Fetch + cache stock quote
+// useQuote — [FRD-003] Fetch + cache stock quote, [US-002] Track fetch timestamp
 
 import { useState, useEffect } from 'react';
 import type { QuoteData } from '../types';
@@ -48,5 +48,5 @@ export function useQuote(symbol: string | undefined) {
     }
   };
 
-  return { quote, isLoading, error, retry };
+  return { quote, isLoading, error, retry, fetchedAt: quote?.fetchedAt ?? null };
 }

@@ -1,4 +1,5 @@
 // useMovers — [FRD-011] Fetch top gainers/losers
+// [US-007] Track section-level fetch timestamp
 
 import { useState, useEffect } from 'react';
 import type { MoverData } from '../types';
@@ -9,6 +10,7 @@ export function useMovers() {
   const [losers, setLosers] = useState<MoverData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [fetchedAt, setFetchedAt] = useState<number | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -21,6 +23,7 @@ export function useMovers() {
         if (!cancelled) {
           setGainers(data.gainers);
           setLosers(data.losers);
+          setFetchedAt(Date.now());
         }
       } catch (err) {
         if (!cancelled) {
@@ -37,5 +40,5 @@ export function useMovers() {
     };
   }, []);
 
-  return { gainers, losers, isLoading, error };
+  return { gainers, losers, isLoading, error, fetchedAt };
 }
