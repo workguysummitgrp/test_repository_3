@@ -1,15 +1,16 @@
-// DashboardPage — [US-010], [US-011] Market indices + top movers
+// DashboardPage — [US-010], [US-011], [US-007] Market indices + top movers + timestamps
 
 import IndexCard from '../components/ui/IndexCard';
 import MoverRow from '../components/ui/MoverRow';
 import SkeletonCard from '../components/ui/SkeletonCard';
 import ErrorMessage from '../components/ui/ErrorMessage';
+import LastUpdated from '../components/ui/LastUpdated';
 import { useIndices } from '../hooks/useIndices';
 import { useMovers } from '../hooks/useMovers';
 
 export default function DashboardPage() {
-  const { indices, isLoading: indicesLoading, error: indicesError } = useIndices();
-  const { gainers, losers, isLoading: moversLoading, error: moversError } = useMovers();
+  const { indices, isLoading: indicesLoading, error: indicesError, fetchedAt: indicesFetchedAt } = useIndices();
+  const { gainers, losers, isLoading: moversLoading, error: moversError, fetchedAt: moversFetchedAt } = useMovers();
 
   return (
     <div className="space-y-8">
@@ -31,6 +32,7 @@ export default function DashboardPage() {
                 />
               ))}
         </div>
+        {!indicesLoading && <LastUpdated fetchedAt={indicesFetchedAt} />}
       </section>
 
       {/* Top Movers */}
@@ -88,6 +90,7 @@ export default function DashboardPage() {
             )}
           </div>
         </div>
+        {!moversLoading && <LastUpdated fetchedAt={moversFetchedAt} />}
       </section>
     </div>
   );

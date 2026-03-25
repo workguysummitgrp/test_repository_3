@@ -68,6 +68,7 @@ function normalizeQuote(data: unknown): QuoteData {
     previousClose: parseFloat(quote['08. previous close'] || '0'),
     change: parseFloat(quote['09. change'] || '0'),
     changePercent: parseFloat((quote['10. change percent'] || '0').replace('%', '')),
+    fetchedAt: Date.now(),
   };
 }
 

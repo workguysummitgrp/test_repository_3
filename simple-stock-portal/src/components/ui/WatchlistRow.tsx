@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import type { QuoteData } from '../../types';
 import { formatCurrency, formatPercent } from '../../utils/formatters';
+import LastUpdated from './LastUpdated';
 
 interface WatchlistRowProps {
   ticker: string;
@@ -28,11 +29,14 @@ export default function WatchlistRow({ ticker, quote, isLoading, onRemove }: Wat
             <div className="h-4 w-16 bg-gray-200 rounded animate-pulse" />
           </div>
         ) : quote ? (
-          <div className="flex items-center gap-4">
-            <span className="font-mono text-sm text-gray-900">{formatCurrency(quote.price)}</span>
-            <span className={`font-mono text-sm font-medium ${quote.change >= 0 ? 'text-emerald-500' : 'text-red-500'}`}>
-              {quote.change >= 0 ? '▲' : '▼'} {formatPercent(quote.changePercent)}
-            </span>
+          <div className="flex flex-col gap-0.5">
+            <div className="flex items-center gap-4">
+              <span className="font-mono text-sm text-gray-900">{formatCurrency(quote.price)}</span>
+              <span className={`font-mono text-sm font-medium ${quote.change >= 0 ? 'text-emerald-500' : 'text-red-500'}`}>
+                {quote.change >= 0 ? '▲' : '▼'} {formatPercent(quote.changePercent)}
+              </span>
+            </div>
+            <LastUpdated fetchedAt={quote.fetchedAt} />
           </div>
         ) : (
           <span className="text-sm text-gray-400">—</span>

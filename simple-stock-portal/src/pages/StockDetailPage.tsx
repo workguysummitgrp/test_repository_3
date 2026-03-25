@@ -1,5 +1,5 @@
 // StockDetailPage — [US-004], [US-005], [US-006], [US-007]
-// Quote + chart + watchlist toggle
+// Quote + chart + watchlist toggle + last updated timestamp
 
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
@@ -12,6 +12,7 @@ import TimeRangeSelector from '../components/ui/TimeRangeSelector';
 import WatchlistButton from '../components/ui/WatchlistButton';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonCard from '../components/ui/SkeletonCard';
+import LastUpdated from '../components/ui/LastUpdated';
 
 export default function StockDetailPage() {
   const { ticker } = useParams<{ ticker: string }>();
@@ -50,7 +51,10 @@ export default function StockDetailPage() {
       ) : quoteLoading ? (
         <SkeletonCard lines={4} />
       ) : quote ? (
-        <QuotePanel quote={quote} />
+        <>
+          <QuotePanel quote={quote} />
+          <LastUpdated fetchedAt={quote.fetchedAt} />
+        </>
       ) : null}
 
       {/* Chart */}
